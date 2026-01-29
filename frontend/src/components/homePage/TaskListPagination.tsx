@@ -26,17 +26,17 @@ const TaskListPagination = ({
 }: TaskListPaginationProps) => {
   const generatePages = () => {
     const pages = [];
-    if (totalPages <= 4) {
+    if (totalPages < 4) {
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i);
       }
     } else {
-      if (page < 4) {
+      if (page < 2) {
         pages.push(1, 2, 3, "...", totalPages);
-      } else if (page > totalPages - 3) {
+      } else if (page > totalPages - 1) {
         pages.push(1, "...", totalPages - 2, totalPages - 1, totalPages);
       } else {
-        pages.push(1, "...", page - 1, page, page + 1, "...", totalPages);
+        pages.push(1, "...", page, "...", totalPages);
       }
     }
     return pages;
@@ -44,12 +44,12 @@ const TaskListPagination = ({
 
   const paginationShow = generatePages();
   return (
-    <div>
+    <div className="flex justify-center mt-4">
       <Pagination>
         <PaginationContent>
           <PaginationItem>
             <PaginationPrevious
-              onClick={handlePrev}
+              onClick={page === 1 ? undefined : handlePrev}
               className={cn(
                 "pointer",
                 page === 1 && "pointer-events-none opacity-50",
@@ -75,7 +75,7 @@ const TaskListPagination = ({
           </PaginationItem>
           <PaginationItem>
             <PaginationNext
-              onClick={handleNext}
+              onClick={page === totalPages ? undefined : handleNext}
               className={cn(
                 "pointer",
                 page === totalPages && "pointer-events-none opacity-50",

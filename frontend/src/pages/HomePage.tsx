@@ -5,7 +5,7 @@ import Header from "@/components/homePage/Header";
 import StatsAndFilters from "@/components/homePage/StatsAndFilters";
 import TaskList from "@/components/homePage/TaskList";
 import TaskListPagination from "@/components/homePage/TaskListPagination";
-import React, { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import type taskType from "@/types/taskType";
 import api from "@/lib/axios";
@@ -31,7 +31,7 @@ const HomePage = () => {
     }
   };
 
-  const filteredTasks = taskBuffer.filter((task: taskType) => {
+  const filteredTasks = taskBuffer?.filter((task: taskType) => {
     switch (filter) {
       case "active":
         return task.status === "active";
@@ -41,6 +41,7 @@ const HomePage = () => {
         return true;
     }
   });
+
   useEffect(() => {
     fetchTasks();
   }, [dateQuery]);
@@ -53,16 +54,16 @@ const HomePage = () => {
   };
 
   // handle Pagination
-  const visibleTasks = filteredTasks.slice(
+  const visibleTasks = filteredTasks?.slice(
     (page - 1) * visibleTasksLimit,
     page * visibleTasksLimit,
   );
 
-  if (visibleTasks.length === 0 && page > 1) {
+  if (visibleTasks?.length === 0 && page > 1) {
     setPage(page - 1);
   }
 
-  const totalPages = Math.ceil(filteredTasks.length / visibleTasksLimit);
+  const totalPages = Math.ceil(filteredTasks?.length / visibleTasksLimit);
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
